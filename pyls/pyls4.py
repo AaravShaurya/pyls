@@ -89,6 +89,7 @@ def format_file_info(file_name, long_format=False, show_suffix=False):
     return output
 
 #Issue 4
+
 def format_file_info(file_name, long_format=False, show_suffix=False):
     """
     Formats file information based on provided options.
