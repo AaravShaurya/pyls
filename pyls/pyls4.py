@@ -1,4 +1,10 @@
 #Issue 2
+
+import os
+import sys
+import stat
+from datetime import datetime
+
 def format_file_info(file_name, long_format=False, show_suffix=False):
     """
     Formats file information based on provided options.
@@ -26,8 +32,6 @@ def format_file_info(file_name, long_format=False, show_suffix=False):
     return output
 
 #Issue 3
-
-from datetime import datetime
 
 def format_file_info(file_name, long_format=False, show_suffix=False):
     """
@@ -117,3 +121,18 @@ def main(args):
 
 if __name__ == "__main__":
     main(sys.argv[1:])
+
+#Issue 6
+
+import pytest
+from pyls import list_files, format_file_info, main
+
+def test_list_files():
+    # Example test for listing files
+    files = list_files()
+    assert "example.txt" in files
+
+def test_format_file_info():
+    # Example test for formatting file info
+    formatted_info = format_file_info("example.txt", long_format=True)
+    assert "example.txt" in formatted_info
