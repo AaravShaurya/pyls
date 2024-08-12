@@ -96,4 +96,24 @@ def format_file_info(file_name, long_format=False, show_suffix=False):
     
     return output
 
-#
+#Issue 5
+import argparse
+
+def main(args):
+    """
+    Main function to parse arguments and display the file listing.
+
+    Args:
+        args (list): List of command-line arguments.
+    """
+    parser = argparse.ArgumentParser(description="A simple implementation of ls command.")
+    parser.add_argument("-F", action="store_true", help="Add suffix to indicate directories and executables.")
+    parser.add_argument("-l", action="store_true", help="Use a long listing format.")
+    args = parser.parse_args(args)
+    
+    files = list_files()
+    for file in files:
+        print(format_file_info(file, long_format=args.l, show_suffix=args.F))
+
+if __name__ == "__main__":
+    main(sys.argv[1:])
