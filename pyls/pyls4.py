@@ -1,78 +1,43 @@
-#Issue 1
 import os
 import sys
 import stat
 from datetime import datetime
+import pytest
+import argparse
 
 def list_files(directory="."):
     """
-    Lists files and directories in the given directory.
+    Look inside a folder to see what files are there.
     
     Args:
-        directory (str): The directory to list the files and directories from.
+        directory (str): The folder you want to check out. Defaults to the current one.
         
     Returns:
-        list: A list of file and directory names.
+        list: All the files and folders inside.
     """
-    assert isinstance(directory, str), "directory must be a string"
+    assert isinstance(directory, str), "Directory name should be a string"
     
     try:
         return os.listdir(directory)
     except Exception as e:
-        print(f"Error listing files in directory {directory}: {e}", file=sys.stderr)
+        print(f"Oops, couldn't list files in {directory}: {e}", file=sys.stderr)
         return []
 
-if __name__ == "__main__":
-    files = list_files()
-    for file in files:
-        print(file)
-
-#Issue 2
-
-
 def format_file_info(file_name, long_format=False, show_suffix=False):
     """
-    Formats file information based on provided options.
+    Gives out file info in the format you want.
     
     Args:
-        file_name (str): The name of the file or directory.
-        long_format (bool): Whether to include long format details like last modified date and size.
-        show_suffix (bool): Whether to add a suffix indicating directory or executable files.
+        file_name (str): The name of the file or folder you want information about.
+        long_format (bool): Set this to True for more details.
+        show_suffix (bool): Set this to True to show if its a dictionary or executable.
     
     Returns:
-        str: The formatted file information.
+        str: A string with the file info.
     """
-    assert isinstance(file_name, str), "file_name must be a string"
-    assert isinstance(long_format, bool), "long_format must be a boolean"
-    assert isinstance(show_suffix, bool), "show_suffix must be a boolean"
-    
-    output = file_name
-    
-    if show_suffix:
-        if os.path.isdir(file_name):
-            output += '/'
-        elif os.access(file_name, os.X_OK) and not os.path.isdir(file_name):
-            output += '*'
-    
-    return output
-
-#Issue 3
-
-def format_file_info(file_name, long_format=False, show_suffix=False):
-    """
-    Formats file information based on provided options.
-    
-    Args:
-        file_name (str): The name of the file or directory.
-        long_format (bool): Whether to include long format details like last modified date and size.
-        show_suffix (bool): Whether to add a suffix indicating directory or executable files.
-    
-    Returns:
-        str: The formatted file information.
-    """
-    assert isinstance(file_name, str), "file_name must be a string"
-    assert isinstance(long_format, bool), "long_format must be a boolean"
-    assert isinstance(show_suffix, bool), "show_suffix must be a boolean"
+    assert isinstance(file_name, str), "file_name should be a string"
+    assert isinstance(long_format, bool), "long_format should be a bool"
+    assert isinstance(show_suffix, bool), "show_suffix should be a bool"
     
     output = file_name
     
@@ -83,39 +48,7 @@ def format_file_info(file_name, long_format=False, show_suffix=False):
             size = file_stats.st_size if os.path.isfile(file_name) else 0
             output = f"{last_modified} {size:10} {file_name}"
         except Exception as e:
-            print(f"Error retrieving stats for {file_name}: {e}", file=sys.stderr)
-            return file_name
-    
-    return output
-
-#Issue 4
-
-def format_file_info(file_name, long_format=False, show_suffix=False):
-    """
-    Formats file information based on provided options.
-    
-    Args:
-        file_name (str): The name of the file or directory.
-        long_format (bool): Whether to include long format details like last modified date and size.
-        show_suffix (bool): Whether to add a suffix indicating directory or executable files.
-    
-    Returns:
-        str: The formatted file information.
-    """
-    assert isinstance(file_name, str), "file_name must be a string"
-    assert isinstance(long_format, bool), "long_format must be a boolean"
-    assert isinstance(show_suffix, bool), "show_suffix must be a boolean"
-    
-    output = file_name
-    
-    if long_format:
-        try:
-            file_stats = os.stat(file_name)
-            last_modified = datetime.fromtimestamp(file_stats.st_mtime).strftime('%Y-%m-%d %H:%M:%S')
-            size = file_stats.st_size if os.path.isfile(file_name) else 0
-            output = f"{last_modified} {size:10} {file_name}"
-        except Exception as e:
-            print(f"Error retrieving stats for {file_name}: {e}", file=sys.stderr)
+            print(f"Sorry, couldn't get stats for {file_name}: {e}", file=sys.stderr)
             return file_name
     
     if show_suffix:
@@ -125,20 +58,17 @@ def format_file_info(file_name, long_format=False, show_suffix=False):
             output += '*'
     
     return output
-
-#Issue 5
-import argparse
 
 def main(args):
     """
-    Main function to parse arguments and display the file listing.
-
+    The main function that reads your command-line arguments and acts accordingly.
+    
     Args:
-        args (list): List of command-line arguments.
+        args (list): A list of arguments you pass in from the command line.
     """
-    parser = argparse.ArgumentParser(description="A simple implementation of ls command.")
-    parser.add_argument("-F", action="store_true", help="Add suffix to indicate directories and executables.")
-    parser.add_argument("-l", action="store_true", help="Use a long listing format.")
+    parser = argparse.ArgumentParser(description="A basic version of the 'ls' command.")
+    parser.add_argument("-F", action="store_true", help="Show if it's a directory or executable with a suffix.")
+    parser.add_argument("-l", action="store_true", help="Show detailed info for each file.")
     args = parser.parse_args(args)
     
     files = list_files()
@@ -148,17 +78,13 @@ def main(args):
 if __name__ == "__main__":
     main(sys.argv[1:])
 
-#Issue 6
-
-import pytest
-from pyls import list_files, format_file_info, main
-
 def test_list_files():
-    # Example test for listing files
+    # Quick test to see if list_files works
     files = list_files()
     assert "example.txt" in files
 
 def test_format_file_info():
-    # Example test for formatting file info
+    # Quick test to see if format_file_info works
     formatted_info = format_file_info("example.txt", long_format=True)
     assert "example.txt" in formatted_info
+    
