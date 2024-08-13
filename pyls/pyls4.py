@@ -5,6 +5,8 @@ from datetime import datetime
 import pytest
 import argparse
 
+#Issue 1
+
 def list_files(directory="."):
     """
     Look inside a folder to see what files are there.
@@ -22,6 +24,9 @@ def list_files(directory="."):
     except Exception as e:
         print(f"Oops, couldn't list files in {directory}: {e}", file=sys.stderr)
         return []
+
+#Issue 2
+#Issue 3
 
 def format_file_info(file_name, long_format=False, show_suffix=False):
     """
@@ -59,6 +64,9 @@ def format_file_info(file_name, long_format=False, show_suffix=False):
     
     return output
 
+#Issue 4
+#Issue 5
+
 def main(args):
     """
     The main function that reads your command-line arguments and acts accordingly.
@@ -78,6 +86,8 @@ def main(args):
 if __name__ == "__main__":
     main(sys.argv[1:])
 
+#Issue 6
+
 def test_list_files():
     # Quick test to see if list_files works
     files = list_files()
@@ -87,4 +97,3 @@ def test_format_file_info():
     # Quick test to see if format_file_info works
     formatted_info = format_file_info("example.txt", long_format=True)
     assert "example.txt" in formatted_info
-    
